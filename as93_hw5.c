@@ -3,16 +3,12 @@
 
 
 #pragma pack (2)
-struct animal { //this is 72bytes in 64bit, 68bytes in 32bit.
+struct animal { //this is 72bytes in 64bit, 68bytes in 32bit. With pack, this is 68bytes in 64bit.
     
     short int id;
-
     char name[20];
-    
     char species[35];
-    
     short int age;
-    
     double weight;
 };
 # pragma pack ()
@@ -21,24 +17,19 @@ struct animal { //this is 72bytes in 64bit, 68bytes in 32bit.
 
 int main(void) {
     
-    
-    
-    
     FILE *cfPtr;
     unsigned long fileLen;
     char* buffer;
-    
-    
     
     if ((cfPtr = fopen("animals.dat", "rb")) == NULL) {
         puts ("File could not be opened.");
     } else {
         
-        int x = 0; //this is the number of holes in the program
+        int holes = 0; //this is the number of holes in the program
         
-        fread(&x, sizeof(int), 1, cfPtr);
+        fread(&holes, sizeof(int), 1, cfPtr);
         
-        printf ("# of holes: %d\n", x);
+        printf ("# of holes: %d\n", holes);
         
         struct animal an = {0, "", "", 0, 0.0};
         
