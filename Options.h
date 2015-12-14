@@ -43,7 +43,30 @@ void writeToFile(FILE *file);
  */
 void searchFile(FILE *file, int idnum);
 
+/* This searches and updates the specified animal.
+ *
+ */
+void updateFile(FILE *file, int idnum);
 
+/* This searches and deleted the specified animal.
+ *
+ */
+void deleteFromFile(FILE* file, int idnum);
 
+/* This increments the number of available holes.
+ *
+ */
+void incrementHole(FILE* file);
 
 #endif
+
+
+
+
+
+
+
+
+
+
+

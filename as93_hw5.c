@@ -24,20 +24,38 @@
 #include "Options.h"
 
 
+
+/* This function prompts the user by showing them the main menu.
+ *
+ */
 void prompt(FILE *file);
-void writeToFile(FILE *file);
+
+/* This function prompts the user to input the id of the animal they want to search for.
+ *
+ */
 void promptSearch(FILE* file);
 
+/* This function prompts the user to input the id of the animal they want to update.
+ *
+ */
+void promptUpdate(FILE* file);
+
+/* This function prompts the user to input the id of the animal they want to delete.
+ *
+ */
+void promptDelete(FILE* file);
 
 
-
+/* Entry point of program.
+ *
+ */
 int main(void) {
     
     FILE *file;
     unsigned long fileLen;
     char* buffer;
     
-    if ((file = fopen("animals.dat", "rb")) == NULL) {
+    if ((file = fopen("animals.dat", "rb+")) == NULL) {
         puts ("File could not be opened.");
         
     } else {
@@ -50,7 +68,9 @@ int main(void) {
 }
 
 
-
+/* This function prompts the user by showing them the main menu.
+ *
+ */
 void prompt (FILE *file) {
     //prompt user for input
     printf("\nPlease select an option:\n");
@@ -66,22 +86,23 @@ void prompt (FILE *file) {
     scanf("%d", &input);
     
     
-    if (input == 0) {
+    if (input == 0) { //quit
         
-        //quit
+        //do nothing
         
-    } else if (input == 1) {
+    } else if (input == 1) { //add
         
    
         prompt(file);
         
-    } else if (input == 2) {
+    } else if (input == 2) { //delete
         
-  
+        promptDelete(file);
         prompt(file);
         
-    } else if (input == 3) {
+    } else if (input == 3) { //update
         
+        promptUpdate(file);
         
         prompt(file);
         
@@ -91,7 +112,7 @@ void prompt (FILE *file) {
 
         prompt(file);
         
-    } else if (input == 5) {
+    } else if (input == 5) { //write
         
         writeToFile(file);
 
@@ -104,9 +125,12 @@ void prompt (FILE *file) {
 }
 
 
+/** This function prompts the user to input the id of the animal they want to search for.
+ *
+ */
 void promptSearch(FILE* file) {
     
-    printf("Type the id number of the animal you want: ");
+    printf("Type the id number of the animal you want to see: ");
     int id;
     scanf("%d", &id);
     printf("\n");
@@ -120,8 +144,44 @@ void promptSearch(FILE* file) {
 }
 
 
+/* This function prompts the user to input the id of the animal they want to update.
+ *
+ */
+void promptUpdate(FILE* file) {
+    
+    printf("Type the id number of the animal you want to update: ");
+    int id;
+    scanf("%d", &id);
+    printf("\n");
+    
+    if (id > 0) {
+        updateFile(file, id);
+    } else {
+        printf("Error: this animal does not exist\n");
+    }
+
+}
 
 
+
+/* This function prompts the user to input the id of the animal they want to delete.
+ *
+ */
+void promptDelete(FILE* file) {
+    
+    printf("Type the id number of the animal you want to delete: ");
+    int id;
+    scanf("%d", &id);
+    printf("\n");
+    
+    if (id > 0) {
+        deleteFromFile(file, id);
+    } else {
+        printf("Error: this animal does not exist\n");
+    }
+    
+    
+}
 
 
 

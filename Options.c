@@ -27,6 +27,8 @@ void writeToFile(FILE *file) {
     int holes;
     struct animal an = {0, "", "", 0, 0.0}; //an animal
     
+    fseek(file, 0, SEEK_SET);
+    
     fread(&holes, sizeof(int), 1, file);
     
     //read in first animal
@@ -69,7 +71,7 @@ void searchFile(FILE *file, int idnum) {
     
     int size = sizeof(struct animal);
     
-    fseek(file, idnum * size - size, SEEK_CUR); //todo put -size in size?
+    fseek(file, idnum * size - size, SEEK_CUR);
     
     fread(&an, size, 1, file);
     
@@ -86,6 +88,117 @@ void searchFile(FILE *file, int idnum) {
     }
     
 }
+
+
+
+
+/* This function finds the animal and then prompts the user for input to update that animal.
+ *
+ */
+void updateFile(FILE *file, int idnum) {
+    
+    printf("The following is the information stored for this animal:\n");
+    
+    fseek(file, 0, SEEK_SET);
+    int hole = 0;
+    fread (&hole, sizeof (int), 1, file);
+    struct animal an = {0, "", "", 0, 0.0};
+    int size = sizeof(struct animal);
+    fseek(file, idnum * size - size, SEEK_CUR);
+    fread(&an, size, 1, file);
+    
+    if (an.age >= 0 && an.id > 0) {
+        
+        printf("id......... %d\n", an.id);
+        printf("name....... %s\n", an.name);
+        printf("species.... %s\n", an.species);
+        printf("age........ %d\n", an.age);
+        printf("weight..... %.2f\n\n", an.weight);
+        
+        
+        
+        char* spec = " %[^\n]%*c";
+        
+        printf("Please enter the updated name: ");
+        scanf("%s", an.name);
+        
+        printf("Please enter the updated species: ");
+        scanf(spec, an.species);
+        
+        printf("Please enter the updated age: ");
+        scanf("%hd", &an.age);
+        
+        printf("Please enter the updated weight: ");
+        scanf("%lf", &an.weight);
+        
+        fseek(file, -sizeof(struct animal), SEEK_CUR);
+        fwrite(&an, sizeof(struct animal), 1, file);
+        
+        
+    } else {
+        
+        printf("Error: this animal does not exist\n");
+    }
+    
+}
+
+
+/* This searches and deleted the specified animal.
+ *
+ */
+void deleteFromFile(FILE* file, int idnum) {
+    
+    fseek(file, 0, SEEK_SET);
+    int hole = 0;
+    fread (&hole, sizeof (int), 1, file);
+    struct animal an = {0, "", "", 0, 0.0};
+    int size = sizeof(struct animal);
+    fseek(file, idnum * size - size, SEEK_CUR);
+    fread(&an, size, 1, file);
+    
+    if (an.age >= 0 && an.id > 0) {
+        
+        an.age = -1;
+        
+        fseek(file, -sizeof(struct animal), SEEK_CUR);
+        fwrite(&an, sizeof(struct animal), 1, file);
+
+        printf("The animal was deleted");
+        
+        incrementHole(file);
+        
+        
+    } else {
+        printf("This animal does not exist");
+    }
+
+    
+    
+}
+
+
+/* This increases the number of available holes in the dat file.
+ *
+ */
+void incrementHole(FILE* file) {
+    
+    fseek(file, 0, SEEK_SET);
+    int hole = 0;
+    fread (&hole, sizeof (int), 1, file);
+    printf("# of holes before changing: %d\n", hole);
+    hole ++;
+    fseek(file, -sizeof(int), SEEK_CUR);
+    fwrite(&hole, sizeof(int), 1, file);
+    
+    fseek(file, 0, SEEK_SET);
+    fread (&hole, sizeof (int), 1, file);
+    printf("# of holes after changing: %d\n", hole);
+}
+
+
+
+
+
 
 
 
