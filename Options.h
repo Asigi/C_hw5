@@ -51,12 +51,27 @@ void updateFile(FILE *file, int idnum);
 /* This searches and deleted the specified animal.
  *
  */
-void deleteFromFile(FILE* file, int idnum);
+int deleteFromFile(FILE* file, int idnum);
 
 /* This increments the number of available holes.
  *
  */
 void incrementHole(FILE* file);
+
+/* This decrements the number of available holes.
+ *
+ */
+void decrementHole(FILE* file);
+
+/* This function prompts the user to enter in information for a new animal.
+ *
+ */
+void addToFile(FILE* file);
+
+/* This function kills an animal using the method specified by the user.
+ *
+ */
+void killFromFile(FILE* file, int idnum, int choice);
 
 #endif
 
